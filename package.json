@@ -1,0 +1,39 @@
+{
+  "name": "fakechat",
+  "version": "1.0.0",
+  "description": "websockets sandbox",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha --require babel-register",
+    "dev": "nodemon src/app.js",
+    "clean": "rm -rf dist && mkdir dist",
+    "build-server": "babel -d dist source -s",
+    "build": "npm run clean && npm run build-server",
+    "start": "node dist/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lvreynoso/fakechat.git"
+  },
+  "author": "Lucia Reynoso",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lvreynoso/fakechat/issues"
+  },
+  "homepage": "https://github.com/lvreynoso/fakechat#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-handlebars": "^3.0.2",
+    "mongoose": "^5.5.2",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.4.3",
+    "@babel/core": "^7.4.3",
+    "@babel/node": "^7.2.2",
+    "@babel/register": "^7.4.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "mocha": "^6.1.3"
+  }
+}
