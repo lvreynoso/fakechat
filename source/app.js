@@ -18,8 +18,9 @@ import socketIO from 'socket.io'
 import chat from './sockets/chat.js'
 const io = socketIO(server)
 let onlineUsers = {}
+let channels = { 'General': [] }
 io.on('connection', (socket) => {
-    chat(io, socket, onlineUsers)
+    chat(io, socket, onlineUsers, channels)
     console.log('🔌 New user connected! 🔌')
 })
 

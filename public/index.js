@@ -3,6 +3,7 @@ window.onload = function () {
     const socket = io.connect()
 
     let currentUser = ''
+    let currentChannel = 'General'
 
     socket.emit('get online users')
 
@@ -83,5 +84,47 @@ window.onload = function () {
         containerNode.appendChild(messageNode)
 
         document.getElementById('messageContainer').appendChild(containerNode)
+    })
+
+    // update channel list with a new channel
+    socket.on('new channel', (newChannel) => {
+        let channelNode = document.createElement('div')
+        channelNode.className = 'channel'
+        channelNode.textContent = `${newChannel}`
+        channelNode.id = `${newChannel}`
+        document.getElementById('channels').appendChild(channelNode)
+    })
+
+    socket.on('user changed channel', (data) => {
+        let currentChannelNode = document.getElementById(currentChannel)
+        currentChannelNode.classList.add('channel')
+        currentChannelNode.classList.remove('channel-current')
+        
+        let selectedChannelNode = document.getElementById(data.channel)
+        selectedChannelNode.classList.add('channel-current')
+        selectedChannelNode.classList.remove('channel')
+        
+        let messageContainer = document.getElementById('messageContainer')
+        while (messageContainer.firstChild) {
+            messageContainer.removeChild(messageContainer.firstChild)
+        }
+        data.messages.forEach( (message) => {
+            let senderNode = document.createElement('p')
+            senderNode.className = 'messageUser'
+            senderNode.textContent = `${message.sender}: `
+
+            let messageNode = document.createElement('p')
+            messageNode.className = 'messageText'
+            messageNode.textContent = `${message.message}`
+
+            let containerNode = document.createElement('div')
+            containerNode.className = 'message'
+            containerNode.appendChild(senderNode)
+            containerNode.appendChild(messageNode)
+
+            messageContainer.appendChild(containerNode)
+        })
+
+        currentChannel = data.channel
     })
 }
