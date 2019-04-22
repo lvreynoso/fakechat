@@ -11,12 +11,12 @@
   </head>
   <body>
 
-    <form class="usernameForm">
+    <form id="usernameForm" class="usernameForm">
       <input id="usernameInput" placeholder="Username"></input>
       <button id="createUserBtn">Join Chat</button>
     </form>
 
-    <div class="mainContainer">
+    <div id='mainContainer' class="mainContainer">
       <div class="channelsAndUsersOnlineContainer">
         <h1 class="brand">Fake Chat</h1>
         <div class="channels">
@@ -25,11 +25,11 @@
             <div class="channel-current">General</div>
         </div>
         <h2>Online Users</h2>
-        <div class="usersOnline"></div>
+        <div id="usersOnline" class="usersOnline"></div>
       </div>
       <div class="chatContainer">
         <div class="chatContainerFluid">
-          <div class="messageContainer">
+          <div id="messageContainer" class="messageContainer">
               <h2>Messages</h2>
           </div>
           <div class="textChatDivide"></div>
