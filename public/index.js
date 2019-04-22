@@ -30,6 +30,14 @@ window.onload = function () {
         }
     })
 
+    document.getElementById('newChannelBtn').addEventListener('click', (event) => {
+        let newChannel = document.getElementById('newChannelInput').value 
+        if (newChannel.length > 0) {
+            socket.emit('new channel', newChannel)
+            document.getElementById('newChannelInput').value = ''
+        }
+    })
+
     socket.on('get online users', (onlineUsers) => {
         for (username in onlineUsers) {
             let newUserDiv = document.createElement('div')

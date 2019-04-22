@@ -21,6 +21,10 @@ const chat = function(io, socket, onlineUsers) {
         socket.emit('get online users', onlineUsers)
     })
 
+    socket.on('new channel', (newChannel) => {
+        console.log(newChannel)
+    })
+
     socket.on('disconnect', () => {
         delete onlineUsers[socket.username]
         io.emit('user has left', onlineUsers)
