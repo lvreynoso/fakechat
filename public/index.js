@@ -4,6 +4,8 @@ window.onload = function () {
 
     let currentUser = ''
 
+    socket.emit('get online users')
+
     document.getElementById('createUserBtn').addEventListener('click', (event) => {
         event.preventDefault()
         const username = document.getElementById('usernameInput').value
@@ -25,6 +27,28 @@ window.onload = function () {
                 message: message,
             })
             document.getElementById('chatInput').value = ''
+        }
+    })
+
+    socket.on('get online users', (onlineUsers) => {
+        for (username in onlineUsers) {
+            let newUserDiv = document.createElement('div')
+            newUserDiv.className = 'userOnline'
+            newUserDiv.textContent = `${username}`
+            document.getElementById('usersOnline').appendChild(newUserDiv)
+        }
+    })
+
+    socket.on('user has left', (onlineUsers) => {
+        let userlist = document.getElementById('usersOnline')
+        while (userlist.firstChild) {
+            userlist.removeChild(userlist.firstChild)
+        }
+        for (username in onlineUsers) {
+            let newUserDiv = document.createElement('div')
+            newUserDiv.className = 'userOnline'
+            newUserDiv.textContent = `${username}`
+            document.getElementById('usersOnline').appendChild(newUserDiv)
         }
     })
 

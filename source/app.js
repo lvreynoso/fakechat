@@ -17,8 +17,9 @@ app.use('/public', express.static('public'))
 import socketIO from 'socket.io'
 import chat from './sockets/chat.js'
 const io = socketIO(server)
+let onlineUsers = {}
 io.on('connection', (socket) => {
-    chat(io, socket)
+    chat(io, socket, onlineUsers)
     console.log('🔌 New user connected! 🔌')
 })
 
