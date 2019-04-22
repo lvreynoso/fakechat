@@ -15,8 +15,10 @@ app.use('/public', express.static('public'))
 
 // socket.io
 import socketIO from 'socket.io'
+import chat from './sockets/chat.js'
 const io = socketIO(server)
 io.on('connection', (socket) => {
+    chat(io, socket)
     console.log('🔌 New user connected! 🔌')
 })
 

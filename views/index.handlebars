@@ -3,10 +3,16 @@
   <head>
     <meta charset="utf-8">
     <title>Fake Chat</title>
+    <link rel="stylesheet" type="text/css" href="/public/index.css">
     <script src="socket.io/socket.io.js"></script>
     <script src="/public/index.js"></script>
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css'></link>
+    <link href='/public/index.css' rel='stylesheet' type='text/css'></link>
   </head>
   <body>
-    <h1>Socket.io</h1>
+    <form id="usernameForm" class="usernameForm">
+      <input id="usernameInput" placeholder="Username"></input>
+      <button id="createUserBtn">Join Chat</button>
+    </form>
   </body>
 </html>
