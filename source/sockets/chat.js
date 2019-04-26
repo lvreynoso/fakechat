@@ -11,9 +11,9 @@ const chat = function(io, socket, onlineUsers, channels) {
 
     // Listen for new messages
     socket.on('new message', (data) => {
-        // Send that data back to ALL clients
-        console.log(`🎤 ${data.sender}: ${data.message} 🎤`)
-        io.emit('new message', data);
+        console.log("New message", data)
+        channels[data.channel].push({ sender: data.sender, message: data.message })
+        io.to(data.channel).emit('new message', data);
     })
 
     socket.on('get online users', () => {
@@ -22,9 +22,19 @@ const chat = function(io, socket, onlineUsers, channels) {
     })
 
     socket.on('new channel', (newChannel) => {
+        console.log()
         channels[newChannel] = []
         socket.join(newChannel)
         io.emit('new channel', newChannel)
+        socket.emit('user changed channel', {
+            channel: newChannel,
+            messages: channels[newChannel]
+        })
+    })
+
+    socket.on('user changed channel', (newChannel) => {
+        console.log('user changed channel', newChannel)
+        socket.join(newChannel)
         socket.emit('user changed channel', {
             channel: newChannel,
             messages: channels[newChannel]

@@ -1,11 +1,13 @@
-window.onload = function () {
-    // connect to the socket.io server
-    const socket = io.connect()
+// connect to the socket.io server
+const socket = io.connect()
 
-    let currentUser = ''
-    let currentChannel = 'General'
+window.onload = function () {
+
+    var currentUser = ''
+    var currentChannel = 'General'
 
     socket.emit('get online users')
+    socket.emit('user changed channel', 'General')
 
     document.getElementById('createUserBtn').addEventListener('click', (event) => {
         event.preventDefault()
@@ -15,7 +17,7 @@ window.onload = function () {
             socket.emit('new user', username)
             currentUser = username
             document.getElementById('usernameForm').remove()
-            document.getElementById('mainContainer').style.display = 'flex' 
+            document.getElementById('mainContainer').style.display = 'flex'
         }
     })
 
@@ -26,6 +28,7 @@ window.onload = function () {
             socket.emit('new message', {
                 sender: currentUser,
                 message: message,
+                channel: currentChannel
             })
             document.getElementById('chatInput').value = ''
         }
@@ -38,6 +41,12 @@ window.onload = function () {
             document.getElementById('newChannelInput').value = ''
         }
     })
+
+    document.getElementById('General').addEventListener('click', channelChange)
+
+    Array.prototype.forEach( (channel) => {
+        channel.addEventListener('click', channelChange)
+    }, document.getElementsByClassName('channel'))
 
     socket.on('get online users', (onlineUsers) => {
         for (username in onlineUsers) {
@@ -70,6 +79,10 @@ window.onload = function () {
     })
 
     socket.on('new message', (data) => {
+        console.log(data)
+        if (currentChannel != data.channel) {
+            return
+        }
         let senderNode = document.createElement('p')
         senderNode.className = 'messageUser'
         senderNode.textContent = `${data.sender}: `
@@ -93,6 +106,7 @@ window.onload = function () {
         channelNode.textContent = `${newChannel}`
         channelNode.id = `${newChannel}`
         document.getElementById('channels').appendChild(channelNode)
+        channelNode.addEventListener('click', channelChange)
     })
 
     socket.on('user changed channel', (data) => {
@@ -127,4 +141,9 @@ window.onload = function () {
 
         currentChannel = data.channel
     })
+}
+
+function channelChange (event) {
+    let newChannel = event.target.textContent
+    socket.emit('user changed channel', newChannel)
 }
