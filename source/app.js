@@ -10,6 +10,9 @@ import handlebars from 'express-handlebars'
 app.engine('handlebars', handlebars())
 app.set('view engine', 'handlebars')
 
+// set the port
+app.set('port', process.env.PORT || 3000)
+
 // use public folder
 app.use('/public', express.static('public'))
 
@@ -28,6 +31,7 @@ app.get('/', (req, res) => {
     res.render('index.handlebars')
 })
 
-server.listen('3000', () => {
-    console.log('Server listening on Port 3000')
+const hotPort = app.get('port')
+server.listen(hotPort, () => {
+    console.log(`Server listening on Port ${hotPort}`)
 })
